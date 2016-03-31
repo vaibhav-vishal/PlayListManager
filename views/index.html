@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script>
+	$(function() {
+		$("#home").show();
+		$("#searchResult").hide();
+		$.getJSON('movies', function(json) {
+			$.each(json,
+					function(index, element) {
+						$("#movieList")
+								.append(
+										"<option value='"+element.Movieid+"'>"
+												+ element.MovieName + "</option>");
+					});
+		});
+		$("#goBtn").click(function() {
+			var selectedId = $("#movieList").val();
+			console.log("ShowMovie/" + selectedId);
+			$("#home").hide();
+			$("#searchResult").show();
+			//window.location.href = "ShowMovie/" + selectedId;
+			$.getJSON('ShowMovie/' + selectedId, function(json) {
+				console.log(json);
+				$("#songName").html(json.songName);
+				$("#Composer").html(json.Composer);
+				$("#Duration").html(json.Duration);
+				console.log(json.songName);
+			});
+		});
+	});
+</script>
+</head>
+<body>
+
+
+	<div id="home">
+		<select id="movieList">
+			<option default disabled="disabled">--Select movie--</option>
+		</select>
+		<button id="goBtn">Go</button>
+	</div>
+	<div id="searchResult">
+		<h2 id="songName"></h2>
+		<h4 id="Composer"></h4>
+		<br>
+		<h3 id="Duration"></h3>
+		<table id=soundTrack>
+			<thead>
+				<tr>
+					<th>Song Name</th>
+					<th>Composer</th>
+					<th>Song Duration</th>
+				</tr>
+			</thead>
+		</table>
+
+	</div>
+
+</body>
+</html>
